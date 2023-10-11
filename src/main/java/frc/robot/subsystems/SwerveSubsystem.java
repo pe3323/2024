@@ -1,10 +1,13 @@
 package frc.robot.subsystems;
 
 
+import java.util.Arrays;
+
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
@@ -52,11 +55,18 @@ public class SwerveSubsystem extends SubsystemBase {
             DriveConstants.kBackRightDriveAbsoluteEncoderOffsetRad,
             DriveConstants.kBackRightDriveAbsoluteEncoderReversed);
 
+
     private final AHRS gyro = new AHRS(SPI.Port.kMXP);
-    private final SwerveDriveOdometry odometer = new SwerveDriveOdometry(DriveConstants.kDriveKinematics,
-            new Rotation2d(0));
+    private final SwerveDriveOdometry odometer;
 
     public SwerveSubsystem() {
+
+        SwerveModulePosition pos = new SwerveModulePosition();
+        SwerveModulePosition []initpos = new SwerveModulePosition[] { pos, pos, pos, pos};
+
+        odometer =  new SwerveDriveOdometry(DriveConstants.kDriveKinematics,
+            new Rotation2d(0), initpos);
+
         new Thread(() -> {
             try {
                 Thread.sleep(1000);
@@ -89,8 +99,18 @@ public class SwerveSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-        odometer.update(getRotation2d(), frontLeft.getState(), frontRight.getState(), backLeft.getState(),
-                backRight.getState());
+
+       
+        SwerveModulePosition lf = new SwerveModulePosition(frontLeft.getDrivePosition(), getRotation2d());
+        SwerveModulePosition rf = new SwerveModulePosition(frontRight.getDrivePosition(), getRotation2d());
+        SwerveModulePosition lb = new SwerveModulePosition(backLeft.getDrivePosition(), getRotation2d());
+        SwerveModulePosition rb = new SwerveModulePosition(backRight.getDrivePosition(), getRotation2d());
+
+        odometer.update(getRotation2d(), 
+            new SwerveModulePosition[]{
+                lf, rf, lb, rb
+            });
+        
         SmartDashboard.putNumber("Robot Heading", getHeading());
         SmartDashboard.putString("Robot Location", getPose().getTranslation().toString());
     }
@@ -103,7 +123,7 @@ public class SwerveSubsystem extends SubsystemBase {
     }
 
     public void setModuleStates(SwerveModuleState[] desiredStates) {
-        SwerveDriveKinematics.normalizeWheelSpeeds(desiredStates, DriveConstants.kPhysicalMaxSpeedMetersPerSecond);
+        SwerveDriveKinematics.desaturateWheelSpeeds(desiredStates, DriveConstants.kPhysicalMaxSpeedMetersPerSecond);
         frontLeft.setDesiredState(desiredStates[0]);
         frontRight.setDesiredState(desiredStates[1]);
         backLeft.setDesiredState(desiredStates[2]);
