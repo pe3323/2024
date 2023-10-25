@@ -61,12 +61,14 @@ public class SwerveSubsystem extends SubsystemBase {
 
     public SwerveSubsystem() {
 
-        SwerveModulePosition pos = new SwerveModulePosition();
-        SwerveModulePosition []initpos = new SwerveModulePosition[] { pos, pos, pos, pos};
+        // SwerveModulePosition pos = new SwerveModulePosition();
+        SwerveModulePosition []initpos = new SwerveModulePosition[] { new SwerveModulePosition(frontLeft.getDrivePosition(), getInitRotation2d(frontLeft)), new SwerveModulePosition(frontRight.getDrivePosition(), getInitRotation2d(frontRight)), 
+            new SwerveModulePosition(backLeft.getDrivePosition(), getInitRotation2d(backLeft)), new SwerveModulePosition(backRight.getDrivePosition(), getInitRotation2d(backRight))};
 
         odometer =  new SwerveDriveOdometry(DriveConstants.kDriveKinematics,
+            // get rotation2d maybe instead of manually setting it? Is the Gyro Relative?
             new Rotation2d(0), initpos);
-
+        
         new Thread(() -> {
             try {
                 Thread.sleep(1000);
@@ -83,9 +85,12 @@ public class SwerveSubsystem extends SubsystemBase {
     public double getHeading() {
         return Math.IEEEremainder(gyro.getAngle(), 360);
     }
-
     public Rotation2d getRotation2d() {
         return Rotation2d.fromDegrees(getHeading());
+    }
+
+    public Rotation2d getInitRotation2d(SwerveModule swrvMod) {
+        return Rotation2d.fromRadians(swrvMod.getAbsoluteEncoderRad());
     }
 
     public Pose2d getPose() {
