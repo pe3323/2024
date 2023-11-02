@@ -67,7 +67,7 @@ public class SwerveSubsystem extends SubsystemBase {
 
         odometer =  new SwerveDriveOdometry(DriveConstants.kDriveKinematics,
             // get rotation2d maybe instead of manually setting it? Is the Gyro Relative?
-            new Rotation2d(0), initpos);
+           gyro.getRotation2d(), initpos);
         
         new Thread(() -> {
             try {
@@ -106,10 +106,10 @@ public class SwerveSubsystem extends SubsystemBase {
     public void periodic() {
 
        
-        SwerveModulePosition lf = new SwerveModulePosition(frontLeft.getDrivePosition(), getRotation2d());
-        SwerveModulePosition rf = new SwerveModulePosition(frontRight.getDrivePosition(), getRotation2d());
-        SwerveModulePosition lb = new SwerveModulePosition(backLeft.getDrivePosition(), getRotation2d());
-        SwerveModulePosition rb = new SwerveModulePosition(backRight.getDrivePosition(), getRotation2d());
+        SwerveModulePosition lf = new SwerveModulePosition(frontLeft.getDrivePosition(), new Rotation2d(frontLeft.getTurningPosition() * 2 * Math.PI));
+        SwerveModulePosition rf = new SwerveModulePosition(frontRight.getDrivePosition(), new Rotation2d(frontRight.getTurningPosition() * 2 * Math.PI));
+        SwerveModulePosition lb = new SwerveModulePosition(backLeft.getDrivePosition(), new Rotation2d(backLeft.getTurningPosition() * 2 * Math.PI));
+        SwerveModulePosition rb = new SwerveModulePosition(backRight.getDrivePosition(), new Rotation2d(backRight.getTurningPosition() * 2 * Math.PI));
 
         odometer.update(getRotation2d(), 
             new SwerveModulePosition[]{
@@ -118,6 +118,14 @@ public class SwerveSubsystem extends SubsystemBase {
         
         SmartDashboard.putNumber("Robot Heading", getHeading());
         SmartDashboard.putString("Robot Location", getPose().getTranslation().toString());
+        SmartDashboard.putNumber("Front Left Wheel Absolute Radians", getInitRotation2d(frontLeft).getRadians());
+        SmartDashboard.putNumber("Front Right Wheel Absolute Radians", getInitRotation2d(frontRight).getRadians());
+        SmartDashboard.putNumber("Back Left Wheel Absolute Radians", getInitRotation2d(backLeft).getRadians());
+        SmartDashboard.putNumber("Back Right Wheel Absolute Radians", getInitRotation2d(backRight).getRadians());
+        SmartDashboard.putNumber("Front Left Wheel Current Angular Position", frontLeft.getTurningPosition());
+        //SmartDashboard.putNumber("Front Right Wheel Current Angular Position", );
+        //SmartDashboard.putNumber("Back Left Wheel Current Angular Position", );
+        //SmartDashboard.putNumber("Back Right Wheel Current Angular Position", );
     }
 
     public void stopModules() {
