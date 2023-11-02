@@ -60,10 +60,11 @@ public final class Constants {
         public static final boolean kFrontRightDriveAbsoluteEncoderReversed = false;
         public static final boolean kBackRightDriveAbsoluteEncoderReversed = false;
 
-        public static final double kFrontLeftDriveAbsoluteEncoderOffsetRad = Math.PI; //-0.254; //-0.327528
+        // Did you make sure to set BootToAbsolute??
+        public static final double kFrontLeftDriveAbsoluteEncoderOffsetRad = 0; //-0.254; //-0.327528
         public static final double kBackLeftDriveAbsoluteEncoderOffsetRad = 0 ; //-1.252; // -2.702843
-        public static final double kFrontRightDriveAbsoluteEncoderOffsetRad = (Math.PI / 2) + (Math.PI / 4); //-1.816; -5.772099
-        public static final double kBackRightDriveAbsoluteEncoderOffsetRad = Math.PI / 2; //-4.811; //-3.176405
+        public static final double kFrontRightDriveAbsoluteEncoderOffsetRad = 0; //-1.816; -5.772099
+        public static final double kBackRightDriveAbsoluteEncoderOffsetRad = 0; //-4.811; //-3.176405
 
         public static final double kPhysicalMaxSpeedMetersPerSecond = 5;
         public static final double kPhysicalMaxAngularSpeedRadiansPerSecond = 2 * 2 * Math.PI;

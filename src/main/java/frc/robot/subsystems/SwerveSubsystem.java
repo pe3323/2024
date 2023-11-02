@@ -106,6 +106,8 @@ public class SwerveSubsystem extends SubsystemBase {
     public void periodic() {
 
        
+        // Used for Odometry purposes only, does not affect Teleop
+
         SwerveModulePosition lf = new SwerveModulePosition(frontLeft.getDrivePosition(), new Rotation2d(frontLeft.getTurningPosition() * 2 * Math.PI));
         SwerveModulePosition rf = new SwerveModulePosition(frontRight.getDrivePosition(), new Rotation2d(frontRight.getTurningPosition() * 2 * Math.PI));
         SwerveModulePosition lb = new SwerveModulePosition(backLeft.getDrivePosition(), new Rotation2d(backLeft.getTurningPosition() * 2 * Math.PI));
@@ -115,17 +117,6 @@ public class SwerveSubsystem extends SubsystemBase {
             new SwerveModulePosition[]{
                 lf, rf, lb, rb
             });
-        
-        SmartDashboard.putNumber("Robot Heading", getHeading());
-        SmartDashboard.putString("Robot Location", getPose().getTranslation().toString());
-        SmartDashboard.putNumber("Front Left Wheel Absolute Radians", getInitRotation2d(frontLeft).getRadians());
-        SmartDashboard.putNumber("Front Right Wheel Absolute Radians", getInitRotation2d(frontRight).getRadians());
-        SmartDashboard.putNumber("Back Left Wheel Absolute Radians", getInitRotation2d(backLeft).getRadians());
-        SmartDashboard.putNumber("Back Right Wheel Absolute Radians", getInitRotation2d(backRight).getRadians());
-        SmartDashboard.putNumber("Front Left Wheel Current Angular Position", frontLeft.getTurningPosition());
-        //SmartDashboard.putNumber("Front Right Wheel Current Angular Position", );
-        //SmartDashboard.putNumber("Back Left Wheel Current Angular Position", );
-        //SmartDashboard.putNumber("Back Right Wheel Current Angular Position", );
     }
 
     public void stopModules() {
