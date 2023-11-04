@@ -68,7 +68,9 @@ public class SwerveModule {
 
     public double getTurningPosition() {
         //SmartDashboard.putNumber("Turning Position " + id, turningEncoder.getPosition());
+        SmartDashboard.putNumber("Turning Encoder radians T: " + turnId + " A: " + absoluteId , turningEncoder.getPosition());
         return turningEncoder.getPosition();
+        
     }
 
     public double getDriveVelocity() {
