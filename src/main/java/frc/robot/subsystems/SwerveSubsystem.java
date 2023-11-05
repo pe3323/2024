@@ -61,12 +61,14 @@ public class SwerveSubsystem extends SubsystemBase {
 
     public SwerveSubsystem() {
 
-        SwerveModulePosition pos = new SwerveModulePosition();
-        SwerveModulePosition []initpos = new SwerveModulePosition[] { pos, pos, pos, pos};
+        // SwerveModulePosition pos = new SwerveModulePosition();
+        SwerveModulePosition []initpos = new SwerveModulePosition[] { new SwerveModulePosition(frontLeft.getDrivePosition(), getInitRotation2d(frontLeft)), new SwerveModulePosition(frontRight.getDrivePosition(), getInitRotation2d(frontRight)), 
+            new SwerveModulePosition(backLeft.getDrivePosition(), getInitRotation2d(backLeft)), new SwerveModulePosition(backRight.getDrivePosition(), getInitRotation2d(backRight))};
 
         odometer =  new SwerveDriveOdometry(DriveConstants.kDriveKinematics,
-            new Rotation2d(0), initpos);
-
+            // get rotation2d maybe instead of manually setting it? Is the Gyro Relative?
+           gyro.getRotation2d(), initpos);
+        
         new Thread(() -> {
             try {
                 Thread.sleep(1000);
@@ -83,9 +85,12 @@ public class SwerveSubsystem extends SubsystemBase {
     public double getHeading() {
         return Math.IEEEremainder(gyro.getAngle(), 360);
     }
-
     public Rotation2d getRotation2d() {
         return Rotation2d.fromDegrees(getHeading());
+    }
+
+    public Rotation2d getInitRotation2d(SwerveModule swrvMod) {
+        return Rotation2d.fromRadians(swrvMod.getAbsoluteEncoderRad());
     }
 
     public Pose2d getPose() {
@@ -101,18 +106,17 @@ public class SwerveSubsystem extends SubsystemBase {
     public void periodic() {
 
        
-        SwerveModulePosition lf = new SwerveModulePosition(frontLeft.getDrivePosition(), getRotation2d());
-        SwerveModulePosition rf = new SwerveModulePosition(frontRight.getDrivePosition(), getRotation2d());
-        SwerveModulePosition lb = new SwerveModulePosition(backLeft.getDrivePosition(), getRotation2d());
-        SwerveModulePosition rb = new SwerveModulePosition(backRight.getDrivePosition(), getRotation2d());
+        // Used for Odometry purposes only, does not affect Teleop
+
+        SwerveModulePosition lf = new SwerveModulePosition(frontLeft.getDrivePosition(), new Rotation2d(frontLeft.getTurningPosition() * 2 * Math.PI));
+        SwerveModulePosition rf = new SwerveModulePosition(frontRight.getDrivePosition(), new Rotation2d(frontRight.getTurningPosition() * 2 * Math.PI));
+        SwerveModulePosition lb = new SwerveModulePosition(backLeft.getDrivePosition(), new Rotation2d(backLeft.getTurningPosition() * 2 * Math.PI));
+        SwerveModulePosition rb = new SwerveModulePosition(backRight.getDrivePosition(), new Rotation2d(backRight.getTurningPosition() * 2 * Math.PI));
 
         odometer.update(getRotation2d(), 
             new SwerveModulePosition[]{
                 lf, rf, lb, rb
             });
-        
-        SmartDashboard.putNumber("Robot Heading", getHeading());
-        SmartDashboard.putString("Robot Location", getPose().getTranslation().toString());
     }
 
     public void stopModules() {

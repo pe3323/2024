@@ -29,9 +29,16 @@ public class SwerveModule {
     private final AnalogInput absoluteEncoder;
     private final boolean absoluteEncoderReversed;
     private final double absoluteEncoderOffsetRad;
+    private final int driveId;
+    private final int turnId;
+    private final int absoluteId;
 
     public SwerveModule(int driveMotorId, int turningMotorId, boolean driveMotorReversed, boolean turningMotorReversed,
             int absoluteEncoderId, double absoluteEncoderOffset, boolean absoluteEncoderReversed) {
+
+        this.driveId = driveMotorId;
+        this.turnId = turningMotorId;
+        this.absoluteId = absoluteEncoderId;
 
         this.absoluteEncoderOffsetRad = absoluteEncoderOffset;
         this.absoluteEncoderReversed = absoluteEncoderReversed;
@@ -45,7 +52,6 @@ public class SwerveModule {
 
         driveEncoder = driveMotor.getEncoder();
         turningEncoder = turningMotor.getEncoder();
-
         driveEncoder.setPositionConversionFactor(ModuleConstants.kDriveEncoderRot2Meter);
         driveEncoder.setVelocityConversionFactor(ModuleConstants.kDriveEncoderRPM2MeterPerSec);
         turningEncoder.setPositionConversionFactor(ModuleConstants.kTurningEncoderRot2Rad);
@@ -62,7 +68,10 @@ public class SwerveModule {
     }
 
     public double getTurningPosition() {
+        //SmartDashboard.putNumber("Turning Position " + id, turningEncoder.getPosition());
+        SmartDashboard.putNumber("Turning Encoder radians T: " + turnId + " A: " + absoluteId , turningEncoder.getPosition());
         return turningEncoder.getPosition();
+        
     }
 
     public double getDriveVelocity() {
@@ -74,9 +83,20 @@ public class SwerveModule {
     }
 
     public double getAbsoluteEncoderRad() {
+
+        // Returns revolutions of the motor
         double angle = absoluteEncoder.getVoltage() / RobotController.getVoltage5V();
+        SmartDashboard.putNumber("Voltage from RoboRio Angle of T: " + turnId + " A: " + absoluteId, angle);
+
+        // Converts the number of revolutions by 2PI in order to convert from revolutions to radians
         angle *= 2.0 * Math.PI;
+        SmartDashboard.putNumber("Voltage converted to Radians Angle of T: " + turnId + " A: " + absoluteId, angle);
+
+        // Subtracts the radian offset value for each swerve module from the angle in radians to arrive at our true radian value
         angle -= absoluteEncoderOffsetRad;
+        SmartDashboard.putNumber("Absolute Encoder Radians T: " + turnId + " A: " + absoluteId ,angle * (absoluteEncoderReversed ? -1.0 : 1.0));
+
+        // Returns the angle as a positive or negative value depending on the boolean value of absoluteEncoderReversed
         return angle * (absoluteEncoderReversed ? -1.0 : 1.0);
     }
 
@@ -97,7 +117,7 @@ public class SwerveModule {
         state = SwerveModuleState.optimize(state, getState().angle);
         driveMotor.set(state.speedMetersPerSecond / DriveConstants.kPhysicalMaxSpeedMetersPerSecond);
         turningMotor.set(turningPidController.calculate(getTurningPosition(), state.angle.getRadians()));
-        SmartDashboard.putString("Swerve[" + absoluteEncoder.getChannel() + "] state", state.toString());
+        //SmartDashboard.putString("Swerve[" + absoluteEncoder.getChannel() + "] state", state.toString());
     }
 
     public void stop() {
