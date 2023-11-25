@@ -15,7 +15,7 @@ public final class Constants {
         public static final double kTurningEncoderRot2Rad = kTurningMotorGearRatio * 2 * Math.PI;
         public static final double kDriveEncoderRPM2MeterPerSec = kDriveEncoderRot2Meter / 60;
         public static final double kTurningEncoderRPM2RadPerSec = kTurningEncoderRot2Rad / 60;
-        public static final double kPTurning = 0.5;
+        public static final double kPTurning = 0.05;
     }
 
     public static final class DriveConstants {
@@ -62,7 +62,7 @@ public final class Constants {
 
         // Did you make sure to set BootToAbsolute??
         public static final double kFrontLeftDriveAbsoluteEncoderOffsetRad = -.32174; // ID 3
-        public static final double kBackLeftDriveAbsoluteEncoderOffsetRad = -321462; // ID 0 
+        public static final double kBackLeftDriveAbsoluteEncoderOffsetRad = -.321462; // ID 0 
         public static final double kFrontRightDriveAbsoluteEncoderOffsetRad = -.319946; // ID 2
         public static final double kBackRightDriveAbsoluteEncoderOffsetRad = -.323072; // ID 1
 
