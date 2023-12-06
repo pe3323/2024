@@ -108,7 +108,7 @@ public class SwerveSubsystem extends SubsystemBase {
        
         // Used for Odometry purposes only, does not affect Teleop
 
-        SwerveModulePosition lf = new SwerveModulePosition(frontLeft.getDrivePosition(), new Rotation2d(frontLeft.getTurningPosition() * 2 * Math.PI));
+        SwerveModulePosition lf = new SwerveModulePosition(frontLeft.getDrivePosition(), new Rotation2d(frontLeft.getTurningPosition() *2 * Math.PI));
         SwerveModulePosition rf = new SwerveModulePosition(frontRight.getDrivePosition(), new Rotation2d(frontRight.getTurningPosition() * 2 * Math.PI));
         SwerveModulePosition lb = new SwerveModulePosition(backLeft.getDrivePosition(), new Rotation2d(backLeft.getTurningPosition() * 2 * Math.PI));
         SwerveModulePosition rb = new SwerveModulePosition(backRight.getDrivePosition(), new Rotation2d(backRight.getTurningPosition() * 2 * Math.PI));
@@ -117,6 +117,8 @@ public class SwerveSubsystem extends SubsystemBase {
             new SwerveModulePosition[]{
                 lf, rf, lb, rb
             });
+
+            SmartDashboard.putNumber("Gyro", getHeading());
     }
 
     public void stopModules() {
@@ -132,5 +134,10 @@ public class SwerveSubsystem extends SubsystemBase {
         frontRight.setDesiredState(desiredStates[1]);
         backLeft.setDesiredState(desiredStates[2]);
         backRight.setDesiredState(desiredStates[3]);
+    }
+
+
+    public void setWheelState( ){
+
     }
 }
