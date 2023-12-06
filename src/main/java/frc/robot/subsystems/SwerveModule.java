@@ -69,7 +69,7 @@ public class SwerveModule {
 
     public double getTurningPosition() {
         //SmartDashboard.putNumber("Turning Position " + id, turningEncoder.getPosition());
-        SmartDashboard.putNumber("Turning Encoder radians T: " + turnId + " A: " + absoluteId , turningEncoder.getPosition());
+        //SmartDashboard.putNumber("Turning Encoder radians T: " + turnId + " A: " + absoluteId , turningEncoder.getPosition());
         return turningEncoder.getPosition();
         
     }
@@ -86,15 +86,15 @@ public class SwerveModule {
 
         // Returns revolutions of the motor
         double angle = absoluteEncoder.getVoltage() / RobotController.getVoltage5V();
-        SmartDashboard.putNumber("Voltage from RoboRio Angle of T: " + turnId + " A: " + absoluteId, angle);
+        //SmartDashboard.putNumber("Voltage from RoboRio Angle of T: " + turnId + " A: " + absoluteId, angle);
 
         // Converts the number of revolutions by 2PI in order to convert from revolutions to radians
         angle *= 2.0 * Math.PI;
-        SmartDashboard.putNumber("Voltage converted to Radians Angle of T: " + turnId + " A: " + absoluteId, angle);
+        //SmartDashboard.putNumber("Voltage converted to Radians Angle of T: " + turnId + " A: " + absoluteId, angle);
 
         // Subtracts the radian offset value for each swerve module from the angle in radians to arrive at our true radian value
         angle -= absoluteEncoderOffsetRad;
-        SmartDashboard.putNumber("Absolute Encoder Radians T: " + turnId + " A: " + absoluteId ,angle * (absoluteEncoderReversed ? -1.0 : 1.0));
+        //SmartDashboard.putNumber("Absolute Encoder Radians T: " + turnId + " A: " + absoluteId ,angle * (absoluteEncoderReversed ? -1.0 : 1.0));
 
         // Returns the angle as a positive or negative value depending on the boolean value of absoluteEncoderReversed
         return angle * (absoluteEncoderReversed ? -1.0 : 1.0);

@@ -118,7 +118,11 @@ public class SwerveSubsystem extends SubsystemBase {
                 lf, rf, lb, rb
             });
 
-            SmartDashboard.putNumber("Gyro", getHeading());
+            SmartDashboard.putNumber("Gyro:", getHeading());
+            SmartDashboard.putNumber("Left Front Swerve: ", frontLeft.getTurningPosition());
+            SmartDashboard.putNumber("Right Front Swerve: ", frontRight.getTurningPosition());
+            SmartDashboard.putNumber("Left Back Swerve: ", backLeft.getTurningPosition());
+            SmartDashboard.putNumber("Right Back Swerve: ", backRight.getTurningPosition());
     }
 
     public void stopModules() {
