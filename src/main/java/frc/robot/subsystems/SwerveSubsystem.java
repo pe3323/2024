@@ -123,6 +123,11 @@ public class SwerveSubsystem extends SubsystemBase {
             SmartDashboard.putNumber("Right Front Swerve: ", frontRight.getTurningPosition());
             SmartDashboard.putNumber("Left Back Swerve: ", backLeft.getTurningPosition());
             SmartDashboard.putNumber("Right Back Swerve: ", backRight.getTurningPosition());
+
+            SmartDashboard.putNumber("Left Front Swerve Absolute: ", frontLeft.getAbsoluteEncoderRad());
+            SmartDashboard.putNumber("Right Front Swerve Absolute: ", frontRight.getAbsoluteEncoderRad());
+            SmartDashboard.putNumber("Left Back Swerve Absolute: ", backLeft.getAbsoluteEncoderRad());
+            SmartDashboard.putNumber("Right Back Swerve Absolute: ", backRight.getAbsoluteEncoderRad());
     }
 
     public void stopModules() {
