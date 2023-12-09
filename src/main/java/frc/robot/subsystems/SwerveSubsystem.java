@@ -128,6 +128,8 @@ public class SwerveSubsystem extends SubsystemBase {
             SmartDashboard.putNumber("Right Front Swerve Absolute: ", frontRight.getAbsoluteEncoderRad());
             SmartDashboard.putNumber("Left Back Swerve Absolute: ", backLeft.getAbsoluteEncoderRad());
             SmartDashboard.putNumber("Right Back Swerve Absolute: ", backRight.getAbsoluteEncoderRad());
+
+            
     }
 
     public void stopModules() {
