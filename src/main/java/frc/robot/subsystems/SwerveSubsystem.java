@@ -94,6 +94,13 @@ public class SwerveSubsystem extends SubsystemBase {
         return Rotation2d.fromDegrees(getHeading());
     }
 
+    public void resetAllEncoders(){
+        backRight.resetEncoders();
+        backLeft.resetEncoders();
+        frontLeft.resetEncoders();
+        frontRight.resetEncoders();
+    }
+
     public Rotation2d getInitRotation2d(SwerveModule swrvMod) {
         return Rotation2d.fromRadians(swrvMod.getAbsoluteEncoderRad());
     }
