@@ -85,10 +85,14 @@ public class SwerveSubsystem extends SubsystemBase {
 
     public void zeroHeading() {
         gyro.reset();
+        //gyro.setAngleAdjustment(90.0);
+        
     }
 
     public double getHeading() {
-        return Math.IEEEremainder(gyro.getAngle(), 360);
+        //return  Math.IEEEremainder(gyro.getAngle(), 360);
+        return -1 * gyro.getYaw();
+        
     }
     public Rotation2d getRotation2d() {
         return Rotation2d.fromDegrees(getHeading());
